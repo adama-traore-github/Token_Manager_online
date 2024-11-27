@@ -1,0 +1,60 @@
+
+body {
+    background-color: #f4f4f4;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+.navbar { background-color: #2c3e50; }
+.navbar-brand { font-weight: bold; font-size: 1.8rem; color: #ecf0f1 !important; animation: bounce 2s infinite; }
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+.navbar-nav .nav-link { color: #ecf0f1 !important; font-size: 1.1rem; }
+.navbar-nav .nav-link:hover { color: #3498db !important; transition: 0.3s; }
+.hero {
+    height: 100vh;
+    background: linear-gradient(to right, #3498db, #2ecc71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
+.hero p { font-size: 1.2rem; margin-bottom: 2rem; }
+footer { background-color: #2c3e50; color: #ecf0f1; text-align: center; padding: 1rem 0; }
+
+.btn-custom {
+    width: 250px;
+    height: 60px;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-custom:hover {
+    transform: scale(1.05);
+}
+
+
+.heroo {
+    background: linear-gradient(to right, #3498db, #2ecc71);
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+    
+}
+
+.coin-icon {
+    animation: spin 3s infinite linear;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

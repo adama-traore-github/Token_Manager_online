@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création de Token</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+     <!-- Font Awesome Icons -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+     <link rel="stylesheet" href="navbar.css">
+
+    <style>
+        /* Animations pour les notifications */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification-enter {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        /* Style personnalisé pour la scrollbar */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E0 #EDF2F7;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #EDF2F7;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #CBD5E0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-white font-bold text-2xl flex items-center">
+                <i class="fas fa-coins coin-icon mr-2"></i> Token Manager
+            </a>
+            <!-- Menu pour écrans moyens et grands -->
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-gray-300 hover:text-white fas fa-home">Accueil</a>
+                <a href="Guide.html" class="text-gray-300 hover:text-white fas fa-info-circle">Guide</a>
+                <a href="https://etherscan.io" target="_blank" class="text-gray-300 hover:text-white fas fa-search-dollar">Etherscan</a>
+                <a href="#" id="createTokenLink" class="text-gray-300 hover:text-white fas fa-plus-circle">Créer des Tokens</a>
+            </div>
+            <!-- Bouton pour menu mobile -->
+            <div class="md:hidden flex items-center">
+                <button id="menuToggle" class="text-white focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Menu mobile collapsible -->
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-700">
+            <a href="#" class="block text-gray-300 hover:text-white py-2 px-4">Accueil</a>
+            <a href="Guide.html" class="block text-gray-300 hover:text-white py-2 px-4">Guide</a>
+            <a href="https://etherscan.io" target="_blank" class="block text-gray-300 hover:text-white py-2 px-4">Etherscan</a>
+            <a href="#" id="createTokenLinkMobile" class="block text-gray-300 hover:text-white py-2 px-4">Créer des Tokens</a>
+        </div>
+    </nav>  
+    <br>  
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Créer/Detruire un Token </h1>
+
+        <div class="grid grid-cols-2 gap-8 mb-8">
+            
+            <!-- Formulaire de création -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 style="font-weight: bold;">Creer un token</h2>
+                <form id="createTokenForm" class="space-y-4">
+                    <div>
+                        <label for="tokenName" class="block text-sm font-medium text-gray-700">Nom:</label>
+                        <input type="text" id="tokenName" required 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                                      focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label for="tokenSymbol" class="block text-sm font-medium text-gray-700">Symbole:</label>
+                        <input type="text" id="tokenSymbol" required 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                                      focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label for="initialSupply" class="block text-sm font-medium text-gray-700">
+                            Approvisionnement initial:
+                        </label>
+                        <input type="number" id="initialSupply" required 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                                      focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label for="decimals" class="block text-sm font-medium text-gray-700">Décimales:</label>
+                        <input type="number" id="decimals" required min="0" max="18" value="18"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                                      focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+
+                    <button type="button" id="createButton" 
+                            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 
+                                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
+                                   transition-colors duration-200" >
+                        Créer le Token
+                    </button>
+                </form>
+            </div>
+
+            <!-- Liste des tokens -->
+            <div class="bg-white rounded-lg shadow-md p-6 " style="max-height: 370px; overflow-y: auto;">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-800">Tokens créés</h2>
+                <div id="tokenList" class="space-y-4 overflow-y-auto custom-scrollbar" 
+                     style="max-height: 400px;"></div>
+            </div>
+        </div>
+
+        <!-- Section historique -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-semibold text-gray-800">Historique des transactions</h2>
+            <button id="toggleHistory" 
+                    class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 
+                           transition-colors duration-200">
+                Voir l'historique
+            </button>
+        </div>
+
+        <div id="transactionHistory" class="bg-white rounded-lg shadow-md p-6 hidden">
+            <div id="transactionList" class="space-y-4 overflow-y-auto custom-scrollbar" 
+                 style="max-height: 400px;"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
+    <script src="app.js"></script>
+     <script>
+        // Contrôle du menu mobile
+        document.getElementById('menuToggle').addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
